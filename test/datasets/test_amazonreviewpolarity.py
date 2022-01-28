@@ -27,18 +27,14 @@ def get_mock_dataset(root_dir):
         with open(txt_file, "w") as f:
             for i in range(5):
                 label = seed % 2 + 1
-                rand_string = " ".join(
-                    random.choice(string.ascii_letters) for i in range(seed)
-                )
+                rand_string = " ".join(random.choice(string.ascii_letters) for i in range(seed))
                 dataset_line = (label, f"{rand_string} {rand_string}")
                 # append line to correct dataset split
                 mocked_data[os.path.splitext(file_name)[0]].append(dataset_line)
                 f.write(f'"{label}","{rand_string}","{rand_string}"\n')
                 seed += 1
 
-    compressed_dataset_path = os.path.join(
-        base_dir, "amazon_review_polarity_csv.tar.gz"
-    )
+    compressed_dataset_path = os.path.join(base_dir, "amazon_review_polarity_csv.tar.gz")
     # create tar file from dataset folder
     with tarfile.open(compressed_dataset_path, "w:gz") as tar:
         tar.add(temp_dataset_dir, arcname="amazon_review_polarity_csv")
@@ -58,9 +54,7 @@ class TestAmazonReviewPolarity(TempDirMixin, TorchtextTestCase):
 
     @parameterized.expand(["train", "test"])
     def test_amazon_review_polarity(self, split):
-        with patch(
-            "torchdata.datapipes.iter.util.cacheholder._hash_check", return_value=True
-        ):
+        with patch("torchdata.datapipes.iter.util.cacheholder._hash_check", return_value=True):
             dataset = AmazonReviewPolarity(root=self.root_dir, split=split)
             n_iter = 0
             for i, (label, text) in enumerate(dataset):
@@ -72,9 +66,7 @@ class TestAmazonReviewPolarity(TempDirMixin, TorchtextTestCase):
 
     @parameterized.expand([("train", ("train",)), ("test", ("test",))])
     def test_amazon_review_polarity_split_argument(self, split1, split2):
-        with patch(
-            "torchdata.datapipes.iter.util.cacheholder._hash_check", return_value=True
-        ):
+        with patch("torchdata.datapipes.iter.util.cacheholder._hash_check", return_value=True):
             dataset1 = AmazonReviewPolarity(root=self.root_dir, split=split1)
             (dataset2,) = AmazonReviewPolarity(root=self.root_dir, split=split2)
 

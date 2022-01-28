@@ -10,4 +10,3 @@ cut -f 2- -d "," .data/AG_NEWS/test.csv | python predict.py  model.i  vocab.i > 
 
 # To run spm with YelpReviewFull
 # python train.py YelpReviewFull --device cuda --save-model-path  model.i --dictionary vocab.i --use-sp-tokenizer True
-

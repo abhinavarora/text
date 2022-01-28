@@ -1,15 +1,14 @@
-from .model import (
-    RobertaEncoderConf,
-    RobertaClassificationHead,
-    RobertaModel,
-)
-
 from .bundler import (
     RobertaModelBundle,
     XLMR_BASE_ENCODER,
     XLMR_LARGE_ENCODER,
     ROBERTA_BASE_ENCODER,
     ROBERTA_LARGE_ENCODER,
+)
+from .model import (
+    RobertaEncoderConf,
+    RobertaClassificationHead,
+    RobertaModel,
 )
 
 __all__ = [
