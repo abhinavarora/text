@@ -13,7 +13,7 @@ public:
 
   Regex(const std::string &re_str);
   std::string Sub(std::string str, const std::string &repl) const;
-  bool FindAndConsume(re2::StringPiece* input, std::string* text) const;
+  bool FindAndConsume(re2::StringPiece *input, std::string *text) const;
 };
 
 std::string _serialize_regex(const c10::intrusive_ptr<Regex> &self);

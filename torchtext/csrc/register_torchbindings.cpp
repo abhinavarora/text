@@ -1,10 +1,10 @@
-#include <gpt2_bpe_tokenizer.h>  // @manual
+#include <gpt2_bpe_tokenizer.h> // @manual
 #include <regex.h>
-#include <regex_tokenizer.h>  // @manual
-#include <sentencepiece.h>    // @manual
+#include <regex_tokenizer.h> // @manual
+#include <sentencepiece.h>   // @manual
 #include <torch/script.h>
-#include <vectors.h>  // @manual
-#include <vocab.h>    // @manual
+#include <vectors.h> // @manual
+#include <vocab.h>   // @manual
 
 #include <iostream>
 namespace torchtext {
@@ -146,4 +146,4 @@ TORCH_LIBRARY_FRAGMENT(torchtext, m) {
   m.def("torchtext::gpt2_bpe_pre_tokenizer", &gpt2_bpe_pre_tokenizer);
 }
 
-}  // namespace torchtext
+} // namespace torchtext

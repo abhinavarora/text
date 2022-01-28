@@ -1,15 +1,15 @@
-#include <gpt2_bpe_tokenizer.h>  // @manual
+#include <gpt2_bpe_tokenizer.h> // @manual
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <regex.h>
-#include <regex_tokenizer.h>                     // @manual
-#include <sentencepiece.h>                       // @manual
-#include <torch/csrc/jit/python/pybind_utils.h>  // @manual
-#include <torch/csrc/utils/pybind.h>             // @manual
+#include <regex_tokenizer.h>                    // @manual
+#include <sentencepiece.h>                      // @manual
+#include <torch/csrc/jit/python/pybind_utils.h> // @manual
+#include <torch/csrc/utils/pybind.h>            // @manual
 #include <torch/script.h>
-#include <vectors.h>        // @manual
-#include <vocab.h>          // @manual
-#include <vocab_factory.h>  // @manual
+#include <vectors.h>       // @manual
+#include <vocab.h>         // @manual
+#include <vocab_factory.h> // @manual
 
 #include <iostream>
 
@@ -24,7 +24,7 @@ Vocab build_vocab_from_text_file(const std::string &file_path,
   torch::jit::script::Module module(*torch::jit::as_module(fn));
   return _build_vocab_from_text_file(file_path, min_freq, num_cpus, module);
 }
-}  // namespace
+} // namespace
 
 // Registers our custom classes with pybind11.
 PYBIND11_MODULE(_torchtext, m) {
@@ -187,4 +187,4 @@ PYBIND11_MODULE(_torchtext, m) {
         &_build_vocab_from_text_file_using_python_tokenizer);
 }
 
-}  // namespace torchtext
+} // namespace torchtext
