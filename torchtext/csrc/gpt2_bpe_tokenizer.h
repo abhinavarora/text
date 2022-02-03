@@ -41,22 +41,22 @@ int list_str_index(std::vector<std::string> list, std::string element,
                    int start);
 
 struct GPT2BPEEncoder : torch::CustomClassHolder {
- private:
+private:
   const int64_t inf_;
   // Encode byte into an unicode character.
   std::vector<std::string> ByteEncode_(std::string token);
   int64_t GetBPEMergeRank_(std::string pair);
 
- protected:
+protected:
   c10::Dict<std::string, std::vector<std::string>> cache_;
   virtual std::vector<std::string> PreTokenize_(std::string input);
   // Return a list of bpe tokens.
-  virtual std::vector<std::string> BPE_(
-      const std::vector<std::string> &token_list);
+  virtual std::vector<std::string>
+  BPE_(const std::vector<std::string> &token_list);
   // Return the token pair(e.g bpe merge) with lowest rank.
   std::string FindBestPair_(std::vector<std::string> pairs);
 
- public:
+public:
   const c10::Dict<std::string, int64_t> bpe_encoder_;
   const c10::Dict<std::string, int64_t> bpe_merge_ranks_;
   const c10::Dict<int64_t, std::string> byte_encoder_;
@@ -98,10 +98,10 @@ GPT2BPEEncoderStatesPybind _serialize_gpt2_bpe_encoder_pybind(
     const c10::intrusive_ptr<GPT2BPEEncoder> &self);
 GPT2BPEEncoderStatesTorchbind _serialize_gpt2_bpe_encoder_torchbind(
     const c10::intrusive_ptr<GPT2BPEEncoder> &self);
-c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_pybind(
-    GPT2BPEEncoderStatesPybind states);
-c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_torchbind(
-    GPT2BPEEncoderStatesTorchbind states);
-}  // namespace torchtext
+c10::intrusive_ptr<GPT2BPEEncoder>
+_deserialize_gpt2_bpe_encoder_pybind(GPT2BPEEncoderStatesPybind states);
+c10::intrusive_ptr<GPT2BPEEncoder>
+_deserialize_gpt2_bpe_encoder_torchbind(GPT2BPEEncoderStatesTorchbind states);
+} // namespace torchtext
 
-#endif  // GPT2_BPE_TOKENIZER_H_
+#endif // GPT2_BPE_TOKENIZER_H_

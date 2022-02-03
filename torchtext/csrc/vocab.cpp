@@ -7,8 +7,7 @@
 #include <vocab.h>       // @manual
 namespace torchtext {
 
-Vocab::Vocab(StringList tokens,
-             const c10::optional<int64_t> &default_index)
+Vocab::Vocab(StringList tokens, const c10::optional<int64_t> &default_index)
     : stoi_(MAX_VOCAB_SIZE, -1), default_index_{default_index} {
   for (auto &token : tokens) {
     // throw error if duplicate token is found

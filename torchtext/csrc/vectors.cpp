@@ -17,7 +17,8 @@ namespace torchtext {
 
 Vectors::Vectors(const IndexMap &stoi, torch::Tensor vectors,
                  torch::Tensor unk_tensor)
-    : stoi_(stoi), vectors_(std::move(vectors)), unk_tensor_(std::move(unk_tensor)) {}
+    : stoi_(stoi), vectors_(std::move(vectors)),
+      unk_tensor_(std::move(unk_tensor)) {}
 
 Vectors::Vectors(const std::vector<std::string> &tokens,
                  const std::vector<std::int64_t> &indices,

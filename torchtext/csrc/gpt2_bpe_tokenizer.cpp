@@ -1,5 +1,5 @@
 #include <gpt2_bpe_tokenizer.h>
-#include <regex.h>  // @manual
+#include <regex.h> // @manual
 
 #include <algorithm>
 #include <sstream>
@@ -7,9 +7,8 @@
 #include <utility>
 
 namespace torchtext {
-const Regex kGPT2Regex(
-    "(\\'s|\\'t|\\'re|\\'ve|\\'m|\\'ll|\\'d| ?\\pL+|"
-    " ?\\pN+| ?[^\\s\\v\\pL\\pN]+|[\\s\\v]+)");
+const Regex kGPT2Regex("(\\'s|\\'t|\\'re|\\'ve|\\'m|\\'ll|\\'d| ?\\pL+|"
+                       " ?\\pN+| ?[^\\s\\v\\pL\\pN]+|[\\s\\v]+)");
 
 bool is_whitespace(const std::string &input) {
   for (const char &c : input) {
@@ -23,14 +22,16 @@ bool is_whitespace(const std::string &input) {
 template <class Key_, class Value_>
 c10::Dict<Key_, Value_> _map_to_c10_dict(std::unordered_map<Key_, Value_> m) {
   c10::Dict<Key_, Value_> d;
-  for (const auto &item : m) d.insert(item.first, item.second);
+  for (const auto &item : m)
+    d.insert(item.first, item.second);
   return d;
 }
 
 template <class Key_, class Value_>
 std::unordered_map<Key_, Value_> _c10_dict_to_map(c10::Dict<Key_, Value_> d) {
   std::unordered_map<Key_, Value_> m;
-  for (const auto &item : d) m[item.key()] = item.value();
+  for (const auto &item : d)
+    m[item.key()] = item.value();
   return m;
 }
 
@@ -64,15 +65,15 @@ std::vector<std::string> gpt2_bpe_pre_tokenizer(std::string input) {
   while (kGPT2Regex.FindAndConsume(&inp, &token)) {
     if (is_whitespace(token)) {
       prepend_space = false;
-      if (inp.empty()) {  // token is last token
+      if (inp.empty()) { // token is last token
         tokens.push_back(token);
       } else {
         if (token.length() > 1) {
           tokens.push_back(token.substr(0, token.length() - 1));
         }
-        if (token[token.length() - 1] == ' ') {  // last char is space
+        if (token[token.length() - 1] == ' ') { // last char is space
           prepend_space = true;
-        } else {  // push last whitespace char as a token if it is not a space
+        } else { // push last whitespace char as a token if it is not a space
           tokens.push_back(token.substr(token.length() - 1));
         }
       }
@@ -106,7 +107,8 @@ int list_str_index(std::vector<std::string> list, std::string element,
 
 std::string concatenate_strings(const std::vector<std::string> &list) {
   std::string ret = "";
-  for (auto s : list) ret += s;
+  for (auto s : list)
+    ret += s;
   return ret;
 }
 
@@ -117,7 +119,8 @@ std::vector<std::string> get_pairs(std::vector<std::string> token_list,
   std::unordered_set<std::string> pairs;
   std::vector<std::string> pairs_vec;
 
-  if (token_list.empty()) return pairs_vec;
+  if (token_list.empty())
+    return pairs_vec;
 
   std::string prev_token = token_list[0];
   for (std::size_t i = 1; i < token_list.size(); ++i) {
@@ -133,11 +136,9 @@ GPT2BPEEncoder::GPT2BPEEncoder(
     const c10::Dict<std::string, int64_t> &bpe_merge_ranks,
     const std::string &seperator,
     const c10::Dict<int64_t, std::string> &byte_encoder, bool caching_enabled)
-    : inf_(bpe_merge_ranks.size() + 1),
-      bpe_encoder_(std::move(bpe_encoder)),
+    : inf_(bpe_merge_ranks.size() + 1), bpe_encoder_(std::move(bpe_encoder)),
       bpe_merge_ranks_(std::move(bpe_merge_ranks)),
-      byte_encoder_(std::move(byte_encoder)),
-      seperator_(std::move(seperator)),
+      byte_encoder_(std::move(byte_encoder)), seperator_(std::move(seperator)),
       caching_enabled_(caching_enabled) {}
 
 GPT2BPEEncoder::GPT2BPEEncoder(
@@ -185,8 +186,8 @@ std::string GPT2BPEEncoder::FindBestPair_(std::vector<std::string> pairs) {
   return pairs[best_pair_idx];
 }
 
-std::vector<std::string> GPT2BPEEncoder::BPE_(
-    const std::vector<std::string> &token_list) {
+std::vector<std::string>
+GPT2BPEEncoder::BPE_(const std::vector<std::string> &token_list) {
   // Given a list of input tokens, keep finding the best bpe merge and
   // generate a new list of tokens until
   //  1) token list size reduced to 1
@@ -204,7 +205,8 @@ std::vector<std::string> GPT2BPEEncoder::BPE_(
   }
   while (true) {
     auto bigram = FindBestPair_(pairs);
-    if (!bpe_merge_ranks_.contains(bigram)) break;
+    if (!bpe_merge_ranks_.contains(bigram))
+      break;
 
     // Finding all indexes that token_list[i] == first and token_list[i+1] ==
     // second. After the loop, new token list will be
@@ -221,7 +223,8 @@ std::vector<std::string> GPT2BPEEncoder::BPE_(
     while (i < tok_list.size()) {
       auto j = list_str_index(tok_list, parts.first, i);
       if (j != -1) {
-        for (int k = i; k < j; k++) new_token_list.push_back(tok_list[k]);
+        for (int k = i; k < j; k++)
+          new_token_list.push_back(tok_list[k]);
         i = j;
       } else {
         for (std::size_t k = i; k < tok_list.size(); k++)
@@ -247,7 +250,8 @@ std::vector<std::string> GPT2BPEEncoder::BPE_(
     }
   }
 
-  if (caching_enabled_) cache_.insert(concatenated, tok_list);
+  if (caching_enabled_)
+    cache_.insert(concatenated, tok_list);
   return tok_list;
 }
 
@@ -270,13 +274,13 @@ std::unordered_map<std::string, int64_t> GPT2BPEEncoder::GetBPEEncoder() const {
   return _c10_dict_to_map(bpe_encoder_);
 }
 
-std::unordered_map<std::string, int64_t> GPT2BPEEncoder::GetBPEMergeRanks()
-    const {
+std::unordered_map<std::string, int64_t>
+GPT2BPEEncoder::GetBPEMergeRanks() const {
   return _c10_dict_to_map(bpe_merge_ranks_);
 }
 
-std::unordered_map<int64_t, std::string> GPT2BPEEncoder::GetByteEncoder()
-    const {
+std::unordered_map<int64_t, std::string>
+GPT2BPEEncoder::GetByteEncoder() const {
   return _c10_dict_to_map(byte_encoder_);
 }
 
@@ -294,8 +298,8 @@ GPT2BPEEncoderStatesTorchbind _serialize_gpt2_bpe_encoder_torchbind(
                          self->caching_enabled_);
 }
 
-c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_pybind(
-    GPT2BPEEncoderStatesPybind states) {
+c10::intrusive_ptr<GPT2BPEEncoder>
+_deserialize_gpt2_bpe_encoder_pybind(GPT2BPEEncoderStatesPybind states) {
   auto state_size = std::tuple_size<decltype(states)>::value;
   TORCH_CHECK(
       state_size == 5,
@@ -306,8 +310,8 @@ c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_pybind(
       std::get<2>(states), std::move(std::get<3>(states)), std::get<4>(states));
 }
 
-c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_torchbind(
-    GPT2BPEEncoderStatesTorchbind states) {
+c10::intrusive_ptr<GPT2BPEEncoder>
+_deserialize_gpt2_bpe_encoder_torchbind(GPT2BPEEncoderStatesTorchbind states) {
   auto state_size = std::tuple_size<decltype(states)>::value;
   TORCH_CHECK(
       state_size == 5,
@@ -318,4 +322,4 @@ c10::intrusive_ptr<GPT2BPEEncoder> _deserialize_gpt2_bpe_encoder_torchbind(
       std::get<2>(states), std::move(std::get<3>(states)), std::get<4>(states));
 }
 
-}  // namespace torchtext
+} // namespace torchtext

@@ -11,7 +11,7 @@ std::string Regex::Sub(std::string str, const std::string &repl) const {
   return str;
 }
 
-bool Regex::FindAndConsume(re2::StringPiece* input, std::string* text) const {
+bool Regex::FindAndConsume(re2::StringPiece *input, std::string *text) const {
   return RE2::FindAndConsume(input, *compiled_pattern_, text);
 }
 
